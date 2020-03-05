@@ -1,3 +1,4 @@
+.vscode/
 *.pkl
 *.bin
 input/
