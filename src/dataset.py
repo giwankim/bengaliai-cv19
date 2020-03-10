@@ -43,7 +43,7 @@ class BengaliDatasetTrain:
         image = image.reshape(137, 236).astype(float)
         image = Image.fromarray(image).convert('RGB')
         image = self.aug(image=np.array(image))['image']
-        image = np.transpose(image, (2, 0, 1)).astype(np.float32)
+        image = image.transpose((2, 0, 1)).astype(np.float32)
         return {
             'image': torch.tensor(image, dtype=torch.float),
             'grapheme_root': torch.tensor(self.grapheme_root[item], dtype=torch.long),
