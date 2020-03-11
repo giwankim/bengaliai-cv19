@@ -1,9 +1,11 @@
 import pandas as pd
 from iterstrat.ml_stratifiers import MultilabelStratifiedKFold
+from pathlib import Path
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('../input/train.csv')
+    data_path = Path(__file__).parent.parent / 'input'
+    df = pd.read_csv(data_path / 'train.csv')
     print(df.head())
 
     # Shuffle dataframe
@@ -23,4 +25,4 @@ if __name__ == '__main__':
         df.loc[val_idx, 'kfold'] = fold
 
     print(df['kfold'].value_counts())
-    df.to_csv('../input/train_folds.csv', index=False)
+    df.to_csv(data_path / 'train_folds.csv', index=False)
