@@ -14,7 +14,7 @@ if __name__ == '__main__':
     x = df['image_id'].values
     y = df[['grapheme_root', 'vowel_diacritic', 'consonant_diacritic']].values
 
-    # Column to indicate validation fold number
+    # Column storing which fold the row belongs to
     df['kfold'] = -1
 
     mskf = MultilabelStratifiedKFold(n_splits=5)
