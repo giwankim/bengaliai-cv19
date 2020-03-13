@@ -149,8 +149,10 @@ def main():
         train(model, optimizer, loss_fn, train_loader)
         loss, acc = validate(model, val_loader)
         scheduler.step(acc)
-        torch.save(model.state_dict(),
-                   f'{BASE_MODEL}_fold{VALIDATION_FOLDS[0]}.pth')
+
+    # Save weights
+    torch.save(model.state_dict(),
+               f'{BASE_MODEL}_fold{VALIDATION_FOLDS[0]}.pth')
 
 
 if __name__ == '__main__':
