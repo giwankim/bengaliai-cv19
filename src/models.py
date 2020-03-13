@@ -8,7 +8,7 @@ class ResNet34(nn.Module):
         super(ResNet34, self).__init__()
         if pretrained == True:
             self.model = pretrainedmodels.__dict__[
-                'resnet34'](pretrainedmodels='imagenet')
+                'resnet34'](pretrained='imagenet')
         else:
             self.model = pretrainedmodels.__dict__['resnet34'](pretrained=None)
 
