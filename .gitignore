@@ -1,6 +1,7 @@
 .vscode/
 *.pkl
 *.pt
+*.pth
 *.bin
 *.csv
 *.parquet
