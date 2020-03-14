@@ -2,7 +2,7 @@ export CUDA_VISIBLE_DEVICES=0
 export TRAINING_FOLDS_CSV="../input/train_folds.csv"
 export IMG_HEIGHT=137
 export IMG_WIDTH=236
-export EPOCHS=50
+export EPOCHS=20
 
 export TRAIN_BATCH_SIZE=256
 export TEST_BATCH_SIZE=512

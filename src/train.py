@@ -33,7 +33,7 @@ def loss_fn(outputs, targets):
     l1 = nn.CrossEntropyLoss()(o1, t1)
     l2 = nn.CrossEntropyLoss()(o2, t2)
     l3 = nn.CrossEntropyLoss()(o3, t3)
-    return (2 * l1 + l2 + l3) / 4
+    return (l1 + l2 + l3) / 3
 
 
 def train(model, optimizer, loss_fn, data_loader):
@@ -102,8 +102,7 @@ def main():
     # Train on multiple GPU's if possible
     if torch.cuda.device_count() > 1:
         model = nn.DataParallel(model)
-    else:
-        model.to(DEVICE)
+    model.to(DEVICE)
 
     # Training data
     train_dataset = BengaliDatasetTrain(
@@ -152,7 +151,7 @@ def main():
 
     # Save weights
     torch.save(model.state_dict(),
-               f'{BASE_MODEL}_fold{VALIDATION_FOLDS[0]}.pth')
+               f'weights/{BASE_MODEL}_fold{VALIDATION_FOLDS[0]}.pth')
 
 
 if __name__ == '__main__':
