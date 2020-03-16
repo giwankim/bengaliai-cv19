@@ -158,7 +158,7 @@ def main():
         scheduler.step(acc)
 
         if epoch == 1 or epoch % 10 == 0:
-            print(f'{datetime.datetime} Epoch {epoch}, Validation loss {loss}, Validation acc {acc}')
+            print(f'{datetime.datetime.now()} Epoch {epoch}, Validation loss {loss}, Validation acc {acc}')
 
     # Save weights
     torch.save(model.state_dict(),
