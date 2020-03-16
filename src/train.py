@@ -90,20 +90,13 @@ def validate(model, data_loader):
 
             # Compute accuracy
             for output, target in zip(outputs, targets):
-                total += output.shape[0]
+                total += len(output)
                 correct += int((output.argmax(1) == target).sum())
 
     return total_loss, correct / total
 
 
-def main():
-    model = MODEL_DISPATCHER[BASE_MODEL](pretrained=True)
-
-    # Train on multiple GPU's if possible
-    if torch.cuda.device_count() > 1:
-        model = nn.DataParallel(model)
-    model.to(DEVICE)
-
+def get_dataloaders():
     # Training data
     train_dataset = BengaliDatasetTrain(
         folds=TRAINING_FOLDS,
@@ -137,6 +130,21 @@ def main():
         num_workers=4
     )
 
+    return train_loader, val_loader
+
+
+def main():
+    # Get data
+    train_loader, val_loader = get_dataloaders()
+
+    # Get model from dispatcher
+    model = MODEL_DISPATCHER[BASE_MODEL](pretrained=True)
+
+    # Train on multiple GPU's if possible
+    if torch.cuda.device_count() > 1:
+        model = nn.DataParallel(model)
+    model.to(DEVICE)
+
     # Specify optimizer
     optimizer = torch.optim.Adam(model.parameters(), lr=4e-4)
 
@@ -144,10 +152,13 @@ def main():
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max',
                                                            patience=5, factor=0.3, verbose=True)
 
-    for epoch in range(EPOCHS):
+    for epoch in range(1, EPOCHS + 1):
         train(model, optimizer, loss_fn, train_loader)
         loss, acc = validate(model, val_loader)
         scheduler.step(acc)
+
+        if epoch == 1 or epoch % 10 == 0:
+            print(f'{datetime.datetime} Epoch {epoch}, Validation loss {loss}, Validation acc {acc}')
 
     # Save weights
     torch.save(model.state_dict(),
